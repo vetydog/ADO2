@@ -69,10 +69,11 @@ namespace ADO2
                 string maxco = "Select max([Cost]) from Products";
                 SqlCommand cmdMaxco = new SqlCommand(maxco, conn);
                 object resultMaxco = cmdMaxco.ExecuteScalar();
-                Console.WriteLine($"Minimum cost: {resultMaxco}");
+                Console.WriteLine($"Max cost: {resultMaxco}");
 
-                string pco = "select * from Products as p Join Categories as c on p.CategoryId = c.Id where c.Name = 'Electronics'";
+                string pco = "select * from Products as p Join Categories as c on p.CategoryId = c.Id where c.Name = @p1";
                 SqlCommand cmdPco = new SqlCommand(pco, conn);
+                cmdPco.Parameters.Add("@p1", System.Data.SqlDbType.NVarChar).Value = "Electronics";
                 SqlDataReader readerPco = cmdPco.ExecuteReader();
 
                 while (readerPco.Read()) {
@@ -81,9 +82,10 @@ namespace ADO2
                 }
 
                 readerPco.Close();
-
-                string psu = "SELECT * FROM Products AS p JOIN Suppliers AS s on p.SupplierId = s.Id Where s.Name = 'Adidas Group'";
+                
+                string psu = "SELECT * FROM Products AS p JOIN Suppliers AS s on p.SupplierId = s.Id Where s.Name = @p2";
                 SqlCommand cmdPsu = new SqlCommand(psu, conn);
+                cmdPsu.Parameters.Add("@p2", System.Data.SqlDbType.NVarChar).Value = "Adidas Group";
                 SqlDataReader readerPsu = cmdPsu.ExecuteReader();
 
                 while (readerPsu.Read()) {
