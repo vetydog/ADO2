@@ -115,6 +115,164 @@ namespace ADO2
 
                 readercmdAvgCo.Close();
 
+                Console.WriteLine("-------------Homework-------------");
+
+                //-------------Homework-------------
+                //string instp = "INSERT INTO Products (Name, Count, Cost, CategoryId,SupplierId) VALUES ('Whatches', 10, 99.99, 1,1);";
+                //SqlCommand cmdinstp = new SqlCommand(instp, conn);
+                //int RowsAffacted = cmdinstp.ExecuteNonQuery();
+
+                //Console.WriteLine(RowsAffacted);
+
+                //string instc = "INSERT INTO Categories (Name) VALUES ('Toys');";
+                //SqlCommand cmdinstc = new SqlCommand(instc, conn);
+                //int RowsAffacted2 = cmdinstc.ExecuteNonQuery();
+
+                //Console.WriteLine(RowsAffacted2);
+
+                //string insts = "INSERT INTO Suppliers (Name) VALUES ('Pop Markt');";
+                //SqlCommand cmdinsts = new SqlCommand(insts, conn);
+                //int RowsAffacted3 = cmdinsts.ExecuteNonQuery();
+
+                //Console.WriteLine(RowsAffacted3);
+
+                string uppr = "UPDATE Products SET Name = 'Glasses' WHERE Id = @p3";
+                SqlCommand cmduppr = new SqlCommand(uppr, conn);
+                cmduppr.Parameters.Add("@p3", System.Data.SqlDbType.Int).Value = 8;
+                int RowsAffacteduppr = cmduppr.ExecuteNonQuery();
+
+                Console.WriteLine(RowsAffacteduppr);
+
+                string upsu = "UPDATE Suppliers SET Name = 'Apple' WHERE Id = @p4";
+                SqlCommand cmdupsu = new SqlCommand(upsu, conn);
+                cmdupsu.Parameters.Add("@p4", System.Data.SqlDbType.Int).Value = 7;
+                int RowsAffactedupsu = cmdupsu.ExecuteNonQuery();
+
+                Console.WriteLine(RowsAffactedupsu);
+
+                string upca = "UPDATE Categories SET Name = 'Phones' WHERE Id = @p5";
+                SqlCommand cmdca = new SqlCommand(upca, conn);
+                cmdca.Parameters.Add("@p5", System.Data.SqlDbType.Int).Value = 9;
+                int RowsAffactedca = cmdca.ExecuteNonQuery();
+
+                Console.WriteLine(RowsAffactedca);
+
+                string delpr = "DELETE FROM Products WHERE Id = @p6";
+                SqlCommand cmddelpr = new SqlCommand(delpr, conn);
+                cmddelpr.Parameters.Add("@p6", System.Data.SqlDbType.Int).Value = 8;
+
+                int RowsAffacteddelpr = cmddelpr.ExecuteNonQuery();
+
+                Console.WriteLine(RowsAffacteddelpr);
+
+                string delsu = "DELETE FROM Suppliers WHERE Id = @p7";
+                SqlCommand cmddelsu= new SqlCommand(delsu, conn);
+                cmddelsu.Parameters.Add("@p7", System.Data.SqlDbType.Int).Value = 7;
+
+                int RowsAffacteddelsu = cmddelsu.ExecuteNonQuery();
+
+                Console.WriteLine(RowsAffacteddelsu);
+
+                string delsca = "DELETE FROM Categories WHERE Id = @p8";
+                SqlCommand cmddelsca = new SqlCommand(delsca, conn);
+                cmddelsca.Parameters.Add("@p8", System.Data.SqlDbType.Int).Value = 9;
+
+                int RowsAffacteddelsca = cmddelsca.ExecuteNonQuery();
+
+                Console.WriteLine(RowsAffacteddelsca);
+
+                string maxSu = "SELECT TOP 1 s.Name, SUM(p.Count) AS ProductCount " +
+              "FROM Products AS p " +
+              "JOIN Suppliers AS s ON p.SupplierId = s.Id " +
+              "GROUP BY s.Id, s.Name " +
+              "ORDER BY SUM(p.Count) DESC";
+
+                SqlCommand cmdMaxSu = new SqlCommand(maxSu, conn);
+                SqlDataReader readerMaxSu = cmdMaxSu.ExecuteReader();
+
+                while (readerMaxSu.Read())
+                {
+                    Console.WriteLine(
+                        $"Supplier: {readerMaxSu["Name"]}, Count: {readerMaxSu["ProductCount"]}");
+                }
+
+                readerMaxSu.Close();
+
+                string minSu = "SELECT TOP 1 s.Name, SUM(p.Count) AS ProductCount " +
+               "FROM Products AS p " +
+               "JOIN Suppliers AS s ON p.SupplierId = s.Id " +
+               "GROUP BY s.Id, s.Name " +
+               "ORDER BY SUM(p.Count) ASC";
+
+                SqlCommand cmdMinSu = new SqlCommand(minSu, conn);
+                SqlDataReader readerMinSu = cmdMinSu.ExecuteReader();
+
+                while (readerMinSu.Read())
+                {
+                    Console.WriteLine(
+                        $"Supplier: {readerMinSu["Name"]}, Count: {readerMinSu["ProductCount"]}");
+                }
+
+                readerMinSu.Close();
+
+
+                string maxCa = "SELECT TOP 1 c.Name, SUM(p.Count) AS ProductCount " +
+              "FROM Products AS p " +
+              "JOIN Categories AS c ON p.CategoryId = c.Id " +
+              "GROUP BY c.Id, c.Name " +
+              "ORDER BY SUM(p.Count) DESC";
+
+                SqlCommand cmdMaxCa = new SqlCommand(maxCa, conn);
+                SqlDataReader readerMaxCa = cmdMaxCa.ExecuteReader();
+
+                while (readerMaxCa.Read())
+                {
+                    Console.WriteLine(
+                        $"Category: {readerMaxCa["Name"]}, Count: {readerMaxCa["ProductCount"]}");
+                }
+
+                readerMaxCa.Close();
+
+                string minCa = "SELECT TOP 1 c.Name, SUM(p.Count) AS ProductCount " +
+              "FROM Products AS p " +
+              "JOIN Categories AS c ON p.CategoryId = c.Id " +
+              "GROUP BY c.Id, c.Name " +
+              "ORDER BY SUM(p.Count) ASC";
+
+                SqlCommand cmdMinCa = new SqlCommand(minCa, conn);
+                SqlDataReader readerMinCa = cmdMinCa.ExecuteReader();
+
+                while (readerMinCa.Read())
+                {
+                    Console.WriteLine(
+                        $"Category: {readerMinCa["Name"]}, Count: {readerMinCa["ProductCount"]}");
+                }
+
+                readerMinCa.Close();
+
+                Console.Write("Enter number of days: ");
+                int days = Convert.ToInt32(Console.ReadLine());
+
+                string oldPr = "SELECT * FROM Products " +
+                               "WHERE DeliveryDate <= DATEADD(DAY, -@days, GETDATE())";
+
+                SqlCommand cmdOldPr = new SqlCommand(oldPr, conn);
+                cmdOldPr.Parameters.Add("@days", System.Data.SqlDbType.Int).Value = days;
+
+                SqlDataReader readerOldPr = cmdOldPr.ExecuteReader();
+
+                while (readerOldPr.Read())
+                {
+                    Console.WriteLine(
+                        $"Id: {readerOldPr["Id"]}, " +
+                        $"Name: {readerOldPr["Name"]}, " +
+                        $"Count: {readerOldPr["Count"]}, " +
+                        $"Cost: {readerOldPr["Cost"]}, " +
+                        $"DeliveryDate: {readerOldPr["DeliveryDate"]}");
+                }
+
+                readerOldPr.Close();
+
 
             }
             catch (Exception ex)
